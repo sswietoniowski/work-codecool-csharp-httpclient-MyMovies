@@ -1,0 +1,10 @@
+﻿Narzędzia NSwagStudio: https://github.com/RicoSuter/NSwag/wiki/NSwagStudio
+Swag CodeGen: https://editor.swagger.io/
+
+Generowanie zależności dla service (w celu stworzenia DTOs) powoduje błąd, przyczyna:
+
+- pomogło przeniesienie do innego katalogu
+
+Dobre, ale tylko jak potrzebujemy czegoś na szybko.
+
+Lepiej wypada NSwagStudio, opcje konfiguracyjne (co pomijamy + wyjątki).
