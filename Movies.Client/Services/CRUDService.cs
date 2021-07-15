@@ -20,13 +20,15 @@ namespace Movies.Client.Services
             _httpClient.BaseAddress = new Uri("http://localhost:57863");
             _httpClient.Timeout = new TimeSpan(0, 0, 30);
             _httpClient.DefaultRequestHeaders.Clear();
+            // accept header is crucial, here we can see how to use different Accept values + quality value (our preference)
             _httpClient.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/xml", 0.9));
             _httpClient.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
         }
 
         public async Task Run()
         {
-            await GetResource();
+            //await GetResource();
+            await GetResourceThroughHttpRequestMessage();
         }
 
         public async Task GetResource()
@@ -58,6 +60,31 @@ namespace Movies.Client.Services
 
         public async Task GetResourceThroughHttpRequestMessage()
         {
+            // proper way to share _httpClient while useing different headers inside different threads
+            var request = new HttpRequestMessage(HttpMethod.Get, "api/movies");
+            request.Headers.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+            var response = await _httpClient.SendAsync(request);
+            response.EnsureSuccessStatusCode();
+            var content = await response.Content.ReadAsStringAsync();
+            var movies = new List<Movie>();
+            if (response.Content.Headers.ContentType.MediaType == "application/json")
+            {
+                movies = JsonSerializer.Deserialize<List<Movie>>(content, new JsonSerializerOptions()
+                {
+                    PropertyNamingPolicy = JsonNamingPolicy.CamelCase
+                });
+            }
+            else if (response.Content.Headers.ContentType.MediaType == "application/xml")
+            {
+                var serializer = new XmlSerializer(typeof(List<Movie>));
+                movies = (List<Movie>)serializer.Deserialize(new StringReader(content));
+            }
+            else
+            {
+
+            }
+
+            // do something with the movies list
 
         }
 
