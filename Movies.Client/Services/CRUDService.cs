@@ -17,7 +17,7 @@ namespace Movies.Client.Services
 
         public CRUDService()
         {
-            _httpClient.BaseAddress = new Uri("http://localhost:57863");
+            _httpClient.BaseAddress = new Uri("http://localhost:33333");
             _httpClient.Timeout = new TimeSpan(0, 0, 30);
             _httpClient.DefaultRequestHeaders.Clear();
             // accept header is crucial, here we can see how to use different Accept values + quality value (our preference)

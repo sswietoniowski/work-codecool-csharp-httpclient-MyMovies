@@ -16,7 +16,7 @@ namespace Movies.Client.Services
 
         public PartialUpdateService()
         {
-            _httpClient.BaseAddress = new Uri("http://localhost:57863");
+            _httpClient.BaseAddress = new Uri("http://localhost:33333");
             _httpClient.Timeout = new TimeSpan(0, 0, 30);
             _httpClient.DefaultRequestHeaders.Clear();
         }
