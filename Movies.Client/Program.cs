@@ -57,7 +57,10 @@ namespace Movies.Client
                 client.BaseAddress = new Uri("http://localhost:33333");
                 client.Timeout = new TimeSpan(0, 0, 30);
                 client.DefaultRequestHeaders.Clear();
-            }).ConfigurePrimaryHttpMessageHandler(handler =>
+            })
+                .AddHttpMessageHandler(handler => new TimeoutDelegatingHandler(TimeSpan.FromSeconds(20)))
+                .AddHttpMessageHandler(handler => new RetryPolicyDelegatingHandler(5))
+                .ConfigurePrimaryHttpMessageHandler(handler =>
                 new HttpClientHandler()
                 {
                     AutomaticDecompression = System.Net.DecompressionMethods.GZip
@@ -100,10 +103,10 @@ namespace Movies.Client
             //serviceCollection.AddScoped<IIntegrationService, HttpClientFactoryInstanceManagementService>();
 
             // For the dealing with errors and faults demos
-             serviceCollection.AddScoped<IIntegrationService, DealingWithErrorsAndFaultsService>();
+            // serviceCollection.AddScoped<IIntegrationService, DealingWithErrorsAndFaultsService>();
 
             // For the custom http handlers demos
-            // serviceCollection.AddScoped<IIntegrationService, HttpHandlersService>();     
+             serviceCollection.AddScoped<IIntegrationService, HttpHandlersService>();     
         }
     }
 }
