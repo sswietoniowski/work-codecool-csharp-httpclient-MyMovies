@@ -13,7 +13,7 @@ namespace Movies.Client.Services
 {
     public class StreamService : IIntegrationService
     {
-        private static HttpClient _httpClient = new HttpClient();
+        private static HttpClient _httpClient = new HttpClient(new HttpClientHandler() { AutomaticDecompression = System.Net.DecompressionMethods.GZip});
 
         public StreamService()
         {
@@ -34,9 +34,49 @@ namespace Movies.Client.Services
             //PostAndReadPosterWithStream();
             // option Marvin.StreamExtensions
             // performance testing
-            TestPostPosterWithoutStream();
-            TestPostPosterWithStream();
-            TestPostAndReadPosterWithStream();
+            //TestPostPosterWithoutStream();
+            //TestPostPosterWithStream();
+            //TestPostAndReadPosterWithStream();
+            // author's recommendation - to minimize memory use always stream while reading, if needed when posting
+            // performance with compression
+            TestGetPosterWithoutStream();
+            TestGetPosterWithStream();
+            TestGetPosterWithStreamAndCompletionMode();
+            TestGetPosterWithStreamAndCompletionModeAndGzipCompression();
+        }
+
+        public async Task TestGetPosterWithStreamAndCompletionModeAndGzipCompression()
+        {
+            // warmup
+            GetPosterWithStreamAndCompletionModeAndGzipCompression();
+
+            var stopWatch = Stopwatch.StartNew();
+
+            for (int i = 0; i < 200; i++)
+            {
+                GetPosterWithStreamAndCompletionModeAndGzipCompression();
+            }
+
+            stopWatch.Stop();
+
+            Console.WriteLine($"Elapsed ms with stream and completion mode and gzip compression: {stopWatch.ElapsedMilliseconds}, averaging: {stopWatch.ElapsedMilliseconds / 200} ms/request");
+        }
+
+        public async Task GetPosterWithStreamAndCompletionModeAndGzipCompression()
+        {
+            var request = new HttpRequestMessage(HttpMethod.Get, $"api/movies/5b1c2b4d-48c7-402a-80c3-cc796ad49c6b/posters/{Guid.NewGuid()}");
+            request.Headers.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+            request.Headers.AcceptEncoding.Add(new StringWithQualityHeaderValue("gzip"));
+
+            var response = await _httpClient.SendAsync(request, HttpCompletionOption.ResponseHeadersRead);
+            using (var stream = await response.Content.ReadAsStreamAsync())
+            {
+                response.EnsureSuccessStatusCode();
+
+                // simplification using extension method
+
+                var poster = stream.ReadAndDeserializeFromJson<Poster>();
+            }
         }
 
         public async Task TestPostPosterWithoutStream()
