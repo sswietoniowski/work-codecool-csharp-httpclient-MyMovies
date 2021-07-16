@@ -11,6 +11,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "01 Client", "01 Client", "{
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "02 Server", "02 Server", "{CC16F37C-017E-4782-B335-12A2125D09E2}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Movies.Api.Tests", "Movies.Api.Tests\Movies.Api.Tests.csproj", "{02643838-5E62-49FA-8125-F5E5FA4CF0A4}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -25,6 +27,10 @@ Global
 		{8614CB18-9723-4EC7-8D41-D34BDECAD0ED}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{8614CB18-9723-4EC7-8D41-D34BDECAD0ED}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{8614CB18-9723-4EC7-8D41-D34BDECAD0ED}.Release|Any CPU.Build.0 = Release|Any CPU
+		{02643838-5E62-49FA-8125-F5E5FA4CF0A4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{02643838-5E62-49FA-8125-F5E5FA4CF0A4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{02643838-5E62-49FA-8125-F5E5FA4CF0A4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{02643838-5E62-49FA-8125-F5E5FA4CF0A4}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

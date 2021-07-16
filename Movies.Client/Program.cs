@@ -107,6 +107,8 @@ namespace Movies.Client
 
             // For the custom http handlers demos
              serviceCollection.AddScoped<IIntegrationService, HttpHandlersService>();     
+
+            // TODO: Polly library :-)
         }
     }
 }
